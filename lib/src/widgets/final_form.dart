@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../models/form_field.dart';
 import '../models/field_type.dart';
+import '../models/form_field.dart';
 import '../models/validator.dart';
 import '../state/form_controller.dart';
+import 'default_field.dart';
 
 typedef FieldBuilder = Widget? Function(
   BuildContext context,
@@ -154,111 +155,25 @@ class _FinalFormState extends State<FinalForm> {
     VoidCallback onBlur,
   ) {
     final hasError = errors.isNotEmpty;
-    final errorText = hasError ? _getErrorMessage(errors.first) : null;
+    final errorText = hasError ? getDefaultErrorMessage(errors.first) : null;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (field.type == FinalFieldType.checkbox)
-            _buildCheckbox(field, value, onChanged, hasError)
-          else
-            _buildTextField(field, value, onChanged, onBlur, errorText),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-    FinalFormField field,
-    dynamic value,
-    void Function(dynamic) onChanged,
-    VoidCallback onBlur,
-    String? errorText,
-  ) {
-    return TextField(
-      controller: TextEditingController(text: value?.toString() ?? '')
-        ..selection = TextSelection.collapsed(
-          offset: (value?.toString() ?? '').length,
-        ),
-      decoration: InputDecoration(
-        labelText: field.label ?? field.name,
-        hintText: field.hint,
-        errorText: errorText,
-        border: const OutlineInputBorder(),
-      ),
-      obscureText: field.type == FinalFieldType.password,
-      keyboardType: _getKeyboardType(field.type),
-      enabled: field.editable,
-      onChanged: onChanged,
-      onEditingComplete: onBlur,
-    );
-  }
-
-  Widget _buildCheckbox(
-    FinalFormField field,
-    dynamic value,
-    void Function(dynamic) onChanged,
-    bool hasError,
-  ) {
-    return Row(
-      children: [
-        Checkbox(
-          value: value == true,
-          onChanged: field.editable ? (v) => onChanged(v ?? false) : null,
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: field.editable ? () => onChanged(!(value == true)) : null,
-            child: Text(
-              field.label ?? field.name,
-              style: TextStyle(
-                color: hasError ? Colors.red : null,
-              ),
+      child: field.type == FinalFieldType.checkbox
+          ? DefaultCheckbox(
+              field: field,
+              value: value,
+              onChanged: onChanged,
+              hasError: hasError,
+            )
+          : DefaultTextField(
+              field: field,
+              value: value,
+              onChanged: onChanged,
+              onBlur: onBlur,
+              errorText: errorText,
             ),
-          ),
-        ),
-      ],
     );
-  }
-
-  TextInputType _getKeyboardType(FinalFieldType type) {
-    switch (type) {
-      case FinalFieldType.email:
-        return TextInputType.emailAddress;
-      case FinalFieldType.phone:
-        return TextInputType.phone;
-      case FinalFieldType.password:
-        return TextInputType.visiblePassword;
-      default:
-        return TextInputType.text;
-    }
-  }
-
-  String _getErrorMessage(FinalValidator validator) {
-    if (validator.customMessage != null) {
-      return validator.customMessage!;
-    }
-
-    switch (validator.type.name) {
-      case 'required':
-        return 'This field is required';
-      case 'email':
-        return 'Invalid email address';
-      case 'phone':
-        return 'Invalid phone number';
-      case 'minLength':
-        return 'Minimum ${validator.params?['min'] ?? 0} characters required';
-      case 'maxLength':
-        return 'Maximum ${validator.params?['max'] ?? 0} characters allowed';
-      case 'age18':
-        return 'Must be at least 18 years old';
-      case 'name':
-        return 'Invalid name';
-      default:
-        return 'Invalid value';
-    }
   }
 
   Widget _buildError() {

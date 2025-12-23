@@ -37,11 +37,37 @@ class CustomFieldsExample extends StatelessWidget {
         await Future.delayed(const Duration(seconds: 1));
       },
       fieldBuilder: (context, field, value, errors, onChanged, onBlur, controller) {
+        final errorText = errors.isNotEmpty ? getDefaultErrorMessage(errors.first) : null;
+
         switch (field.type) {
           case FinalFieldType.email:
-            return _buildEmailField(field, value, errors, onChanged, onBlur);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: DefaultTextField(
+                field: field,
+                value: value,
+                onChanged: onChanged,
+                onBlur: onBlur,
+                errorText: errorText,
+                prefixIcon: const Icon(Icons.email, color: Colors.blue),
+                fillColor: Colors.blue.withValues(alpha: 0.1),
+                borderRadius: 12,
+              ),
+            );
           case FinalFieldType.password:
-            return _buildPasswordField(field, value, errors, onChanged, onBlur);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: DefaultTextField(
+                field: field,
+                value: value,
+                onChanged: onChanged,
+                onBlur: onBlur,
+                errorText: errorText,
+                prefixIcon: const Icon(Icons.lock, color: Colors.purple),
+                fillColor: Colors.purple.withValues(alpha: 0.1),
+                borderRadius: 12,
+              ),
+            );
           default:
             return null;
         }
@@ -65,79 +91,6 @@ class CustomFieldsExample extends StatelessWidget {
               : const Text('Custom Submit Button'),
         );
       },
-    );
-  }
-
-  Widget _buildEmailField(
-    FinalFormField field,
-    dynamic value,
-    List<FinalValidator> errors,
-    void Function(dynamic) onChanged,
-    VoidCallback onBlur,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${field.label} (Custom Email Field)',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          TextField(
-            onChanged: onChanged,
-            onEditingComplete: onBlur,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.email, color: Colors.blue),
-              filled: true,
-              fillColor: Colors.blue.withValues(alpha: 0.1),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-              errorText: errors.isNotEmpty ? 'Invalid email' : null,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPasswordField(
-    FinalFormField field,
-    dynamic value,
-    List<FinalValidator> errors,
-    void Function(dynamic) onChanged,
-    VoidCallback onBlur,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${field.label} (Custom Password Field)',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          TextField(
-            obscureText: true,
-            onChanged: onChanged,
-            onEditingComplete: onBlur,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.lock, color: Colors.purple),
-              filled: true,
-              fillColor: Colors.purple.withValues(alpha: 0.1),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-              errorText: errors.isNotEmpty ? 'Password must be at least 6 characters' : null,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

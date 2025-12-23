@@ -13,6 +13,7 @@ export 'src/validation/validators.dart';
 export 'src/state/form_controller.dart';
 
 // Widgets
+export 'src/widgets/default_field.dart';
 export 'src/widgets/final_form.dart';
 
 // Utils

@@ -1,14 +1,14 @@
 name: final_forms
 description: A standalone Flutter form package with validation, custom field builders, and programmatic control. Zero external dependencies.
-version: 1.0.0
-homepage: https://github.com/user/final_forms
-repository: https://github.com/user/final_forms
-issue_tracker: https://github.com/user/final_forms/issues
+version: 2.0.0
+homepage: https://github.com/Matey2010/final-forms
+repository: https://github.com/Matey2010/final-forms
+issue_tracker: https://github.com/Matey2010/final-forms/issues
 topics:
   - form
   - validation
   - widget
-  - ui
+  - form-builder
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

@@ -1,11 +1,10 @@
-import 'field_type.dart';
 import 'possible_value.dart';
 import 'validator.dart';
 import 'validator_type.dart';
 
 class FinalFormField {
   final String name;
-  final FinalFieldType type;
+  final String type;
   final List<FinalValidator> validators;
   final List<PossibleValue>? possibleValues;
   final bool editable;
@@ -32,7 +31,7 @@ class FinalFormField {
 
   FinalFormField copyWith({
     String? name,
-    FinalFieldType? type,
+    String? type,
     List<FinalValidator>? validators,
     List<PossibleValue>? possibleValues,
     bool? editable,

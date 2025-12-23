@@ -16,7 +16,7 @@ A standalone, reusable Flutter form package with validation, custom field builde
 
 ```yaml
 dependencies:
-  final_forms: ^1.0.0
+  final_forms: ^2.0.0
 ```
 
 Or run:
@@ -95,6 +95,8 @@ FinalForm(
 
 ## Field Types
 
+Built-in types with automatic keyboard/rendering behavior:
+
 - `FinalFieldType.text` - Text input
 - `FinalFieldType.password` - Password input (obscured)
 - `FinalFieldType.email` - Email input with email keyboard
@@ -102,6 +104,20 @@ FinalForm(
 - `FinalFieldType.date` - Date input
 - `FinalFieldType.select` - Dropdown select
 - `FinalFieldType.checkbox` - Checkbox
+
+### Custom Field Types
+
+Use any string value for custom types:
+
+```dart
+FinalFormField(
+  name: 'rating',
+  type: 'rating', // Custom type
+  label: 'Rating',
+),
+```
+
+Handle custom types in your `fieldBuilder` to render custom widgets.
 
 ## Validators
 
